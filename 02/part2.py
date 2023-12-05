@@ -36,13 +36,18 @@ def do_solution_2() -> int:
     # Valider only 12 red cubes, 13 green cubes, and 14 blue cubes, par tour
     somme = 0
     for game_id, tours in dt_games.items():
-        game_valide = True
+        # Trouver le plus de cubes rouge, vert et bleu dans une game
+        max_red = 0
+        max_green = 0
+        max_blue = 0
         for num_tour, tour in tours.items():
-            if tour.get("red") > 12 or tour.get("green") > 13 or tour.get("blue") > 14:
-                game_valide = False
-                break  # On sort de la game
-        if game_valide:
-            somme += int(game_id)
+            if tour.get("red") > max_red:
+                max_red = tour.get("red")
+            if tour.get("green") > max_green:
+                max_green = tour.get("green")
+            if tour.get("blue") > max_blue:
+                max_blue = tour.get("blue")
+        somme += max_red * max_green * max_blue
 
     # The power of a set of cubes is equal to the numbers of red, green, and blue cubes multiplied together.
     # The power of the minimum set of cubes in game 1 is 48. In games 2-5 it was 12, 1560, 630, and 36, respectively.
