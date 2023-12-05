@@ -1,8 +1,3 @@
-# only 12 red cubes, 13 green cubes, and 14 blue cubes
-# What is the sum of the IDs of those games ?
-# Réponse 8 pour le test input
-
-
 def fn_lire_data(nom_data: str) -> list:
     with open(f"{nom_data}_input.txt", "r") as puzzle_input:
         return puzzle_input.read().split("\n")
@@ -20,7 +15,7 @@ def fn_prep_data(p_puzzle_data: list) -> dict:
                 game_id += num
         # Extraire les cubes, par tour
         for num_tour, tour in enumerate(cubes.split(";")):
-            dt_tour = {}
+            dt_tour = {"red": 0, "green": 0, "blue": 0}
             for cube in tour.split(","):
                 nb_cubes = ""
                 couleur_cubes = ""
@@ -36,16 +31,22 @@ def fn_prep_data(p_puzzle_data: list) -> dict:
 
 
 def do_solution_1() -> int:
-    puzzle_data = fn_lire_data("test")
-    ls_lignes = fn_prep_data(puzzle_data)
-    dt_games = {"1":
-                {
-                "tour1": {"red": 0, "green": 0, "blue": 0},
-                "tour2": {"red": 0, "green": 0, "blue": 0},
-                "tour3": {"red": 0, "green": 0, "blue": 0}
-                }
-    }
-    return int
+    puzzle_data = fn_lire_data("puzzle")
+    dt_games = fn_prep_data(puzzle_data)
+    # Valider only 12 red cubes, 13 green cubes, and 14 blue cubes, par tour
+    somme = 0
+    for game_id, tours in dt_games.items():
+        game_valide = True
+        for num_tour, tour in tours.items():
+            if tour.get("red") > 12 or tour.get("green") > 13 or tour.get("blue") > 14:
+                game_valide = False
+                break  # On sort de la game
+        if game_valide:
+            somme += int(game_id)
+
+    # What is the sum of the IDs of those games ?
+    # Réponse 8 pour le test input
+    return somme
 
 
 if __name__ == "__main__":
